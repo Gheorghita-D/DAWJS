@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/style.css">
+  <title>SPA Demo</title>
+</head>
+<body>
+    
+      <a class="item" href="/">
+        Projects
+      </a>
+      <a class="item" id="team" href="#team" >
+        Create Team
+      </a>
+      <a class="item" href="/stats">
+        View Statistics
+      </a>
+    </div>
+    <div id="demo">Ce era inainte</div>
+    <!-- Application Root -->
+    <div id="app">
+        <div id="project-container">
+            <div class="project">This is a test project</div>
+            <div class="project">This is a test project</div>
+            <div class="project">This is a test project</div>
+            <div class="project">This is a test project</div>
+            <div class="project">This is a test project</div>
+            <div class="project">This is a test project</div>
+        </div>
+    </div>
+  </div>
+</body>
+<script>
+  function changeDom(){
+
+    (async () => {
+      const fetchResult = await fetch('http://localhost:3000/#team');
+      // Here fetch return the promise, so we need to await it again and parse according to our needs. So, the result code would be this
+      const data = await fetchResult.json();
+      console.log(data);
+      document.getElementById("app").innerHTML = data.message;
+      
+    })()
+
+    //fetch call
+   /* fetch('http://localhost:3000/#team').then(
+      function(response) {
+        document.getElementById("app").innerHTML = response.json();
+        console.log(response);
+        
+        return response;
+      })
+    .catch(function(error) {
+      console.log(error);
+    })*/
+   
+};
+  
+document.getElementById("team").addEventListener("click", changeDom);
+
+</script>
+</html>
