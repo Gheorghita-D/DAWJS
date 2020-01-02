@@ -3,9 +3,15 @@ const app = express();
 const path = require('path');
 const router = express.Router();
 
+
+
 router.get('/',function(req,res){
 	res.sendFile(path.join(__dirname+'/index.html'));
 });
+
+router.get('/board', function(req, res) {
+
+})
 
 router.post('/tasks',function(req,res){
 	console.log("ihhkkjg")
@@ -21,7 +27,7 @@ console.log('Running at Port 3000');
 
 // const User = require('./model.js')
 
-// // create a new user called chris
+// // create a new user called chrisx	
 // var chris = new User({
 //   name: 'Chris' 
 // });
