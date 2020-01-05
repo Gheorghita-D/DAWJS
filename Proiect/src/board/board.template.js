@@ -1,4 +1,4 @@
-export const board = `<section>
+const Board = `<section>
     <main>
         <article id="lists">
             <div class="list"><label for="noCategory">No category</label>

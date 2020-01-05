@@ -9,10 +9,6 @@ router.get('/',function(req,res){
 	res.sendFile(path.join(__dirname+'/index.html'));
 });
 
-router.get('/board', function(req, res) {
-
-})
-
 router.post('/tasks',function(req,res){
 	console.log("ihhkkjg")
 	res.send({message: "Task added!"})
@@ -21,7 +17,7 @@ router.post('/tasks',function(req,res){
 app.use("/static", express.static('./static/'));
 //add the router
 app.use('/', router);
-app.listen(process.env.port || 3000);
+app.listen(process.env.port || 3003);
 
 console.log('Running at Port 3000');
 
