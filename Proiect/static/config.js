@@ -323,14 +323,17 @@ function dropOnList(e){
 
 
 const routes = [{
+  title: 'board',
   pathname: '/board',
   controller: boardJS,
   htmlTemplate: boardHtml
 },{
+    title: 'login',
     pathname: '/login',
     controller: loginJs,
     htmlTemplate: LoginHtml 
 }, {
+    title: 'register',
     pathname: '/register',
     controller: RegisterJs,
     htmlTemplate: RegisterHtml
@@ -357,31 +360,37 @@ setInterval(function()
             }
           }
         console.log('+++ currentPage', currentPage);
-    } else {
-        for (let i = 0; i < routes.length; i++) {
-            if (routes[i].pathname === window.location.pathname) {
-              const target = document.getElementById("target")
-              target.innerHTML = routes[i].htmlTemplate
-              let jsScript = document.createElement('script');
-              jsScript.innerHTML = routes[i].controller;
-              target.appendChild(jsScript);
-            }
-          }
-    }
+    } 
 }, 500);
 
-
-window.onhashchange = () => {
+window.onload = function() {
     for (let i = 0; i < routes.length; i++) {
-      if (routes[i].pathname === window.location.pathname) {
-        const target = document.getElementById("target")
-        target.innerHTML = routes[i].htmlTemplate
-        let jsScript = document.createElement('script');
-        jsScript.innerHTML = routes[i].controller;
-        target.appendChild(jsScript);
+        if (routes[i].pathname === window.location.pathname) {
+          const target = document.getElementById("target")
+          if (target.innerHTML !== routes[i].htmlTemplate) {
+            target.innerHTML = routes[i].htmlTemplate
+          let jsScript = document.createElement('script');
+          jsScript.innerHTML = routes[i].controller;
+          target.appendChild(jsScript);
+          }
+          
+        }
       }
-    }
-  }
+}
+
+// window.onhashchange = () => {
+//     for (let i = 0; i < routes.length; i++) {
+//       if (routes[i].pathname === window.location.pathname) {
+//         const target = document.getElementById("target")
+//         target.innerHTML = routes[i].htmlTemplate
+//         let jsScript = document.createElement('script');
+//         jsScript.innerHTML = routes[i].controller;
+//         target.appendChild(jsScript);
+//       }
+//     }
+//   }
+
+
 
 const onNavigate = (pathname) => {
   window.history.pushState(
