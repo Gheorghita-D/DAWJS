@@ -9,6 +9,20 @@ router.get('/',function(req,res){
 	res.sendFile(path.join(__dirname+'/index.html'));
 });
 
+router.get('/board',function(req,res){
+	res.sendFile(path.join(__dirname+'/index.html'));
+});
+
+router.get('/login',function(req,res){
+	res.sendFile(path.join(__dirname+'/index.html'));
+});
+
+router.get('/register',function(req,res){
+	res.sendFile(path.join(__dirname+'/index.html'));
+});
+
+
+
 router.post('/tasks',function(req,res){
 	console.log("ihhkkjg")
 	res.send({message: "Task added!"})

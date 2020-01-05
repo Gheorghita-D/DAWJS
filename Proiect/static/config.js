@@ -336,9 +336,44 @@ const routes = [{
     htmlTemplate: RegisterHtml
 }];
 
+// store url on load
+var currentPage = location.href;
+
+// listen for changes
+setInterval(function()
+{
+    if (currentPage != location.href)
+    {
+        console.log(currentPage, location.href);
+        // page has changed, set new page as 'current'
+        currentPage = location.href;
+        for (let i = 0; i < routes.length; i++) {
+            if (routes[i].pathname === window.location.pathname) {
+              const target = document.getElementById("target")
+              target.innerHTML = routes[i].htmlTemplate
+              let jsScript = document.createElement('script');
+              jsScript.innerHTML = routes[i].controller;
+              target.appendChild(jsScript);
+            }
+          }
+        console.log('+++ currentPage', currentPage);
+    } else {
+        for (let i = 0; i < routes.length; i++) {
+            if (routes[i].pathname === window.location.pathname) {
+              const target = document.getElementById("target")
+              target.innerHTML = routes[i].htmlTemplate
+              let jsScript = document.createElement('script');
+              jsScript.innerHTML = routes[i].controller;
+              target.appendChild(jsScript);
+            }
+          }
+    }
+}, 500);
+
+
 window.onhashchange = () => {
     for (let i = 0; i < routes.length; i++) {
-      if (routes[i].pathname === pathname) {
+      if (routes[i].pathname === window.location.pathname) {
         const target = document.getElementById("target")
         target.innerHTML = routes[i].htmlTemplate
         let jsScript = document.createElement('script');
