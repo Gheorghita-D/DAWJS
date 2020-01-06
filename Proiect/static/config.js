@@ -134,11 +134,13 @@ function addCheckEv(cb){
     cb.addEventListener('change', (e) => {
         let fields = e.target.parentNode.childNodes
         if(e.target.checked){
+            e.target.parentNode.style.color = 'white'
             e.target.parentNode.style.backgroundColor = 'rgba(100, 200, 100, 0.5)'
-            fields[1].style.opacity = 0.2
-            fields[2].style.opacity = 0.3
+            fields[1].style.opacity = 0.8
+            fields[2].style.opacity = 0.8
         }else{
-            e.target.parentNode.style.backgroundColor = 'rgba(200, 200, 200, 0.5)'
+            e.target.parentNode.style.backgroundColor = 'white'
+            e.target.parentNode.style.color = '#664162'
             fields[1].style.opacity = 1
             fields[2].style.opacity = 1
         }
