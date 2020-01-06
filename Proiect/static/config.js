@@ -21,7 +21,7 @@ const LoginHtml = `<form action="action_page.php" method="post">
 const loginJs = ``
 
 
-const RegisterHtml = `<form action="action_page.php">
+const RegisterHtml = `<form action="/register" method="post">
 <div class="container">
   <h1>Register</h1>
   <p>Please fill in this form to create an account.</p>
