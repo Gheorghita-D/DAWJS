@@ -54,38 +54,9 @@ router.post('/tasks',function(req,res){
 });
 
 app.use("/static", express.static('./static/'));
+app.use("/src", express.static('./src/'));
 //add the router
 app.use('/', router);
-app.listen(process.env.port || 3003);
+app.listen(process.env.port || 3000);
 
 console.log('Running at Port 3000');
-
-// const User = require('./model.js')
-
-// // create a new user called chrisx	
-// var chris = new User({
-//   name: 'Chris' 
-// });
-
-// // call the custom method. this will just add -dude to his name
-// // user will now be Chris-dude
-// chris.dudify(function(err, name) {
-//   if (err) throw err;
-
-//   console.log('Your new name is ' + name);
-// });
-
-// // call the built-in save method to save to the database
-// chris.save(function(err) {
-//   if (err) throw err;
-
-//   console.log('User saved successfully!');
-// });
-
-// // get all the users
-// User.find({}, function(err, users) {
-//   if (err) throw err;
-
-//   // object of all the users
-//   console.log(users);
-// });

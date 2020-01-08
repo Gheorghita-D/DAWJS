@@ -1,3 +1,4 @@
+export const BoardJs = `
 btn = document.querySelector('button')
 section = document.querySelector("section")
 
@@ -7,7 +8,7 @@ var selectedEl = []
 btn.addEventListener('click', (e) => {
     var task = document.createElement('li')
     var title = document.createElement('input')
-    title.setAttribute('placeholder','task\'s title')
+    title.setAttribute('placeholder','tasks title')
     title.style.height =  '30px'
     title.style.margin =  '5px'
     title.style.borderRadius = '5px'
@@ -249,4 +250,4 @@ function dropOnList(e){
     }
 
     selectedEl = []
-}
+}`
