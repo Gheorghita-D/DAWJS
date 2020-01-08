@@ -13,19 +13,10 @@ export const BoardHtml = `<section>
         <div class="column"></div>
     </div>
     </aside>
-    // <div class="modal">
-    //     <div class="modalContent">
-    //         <label class='close'>&times;</label>
-    //         <input class='newCategory' placeholder="Category name">
-    //     </div>
-    // </div>
-    
-
-    <div class="row">
-        <div class="column"></div>
-        <div class="column"></div>
-        <div class="column"></div>
+    <div class="modal">
+        <div class="modalContent">
+            <label class='close'>&times;</label>
+            <input class='newCategory' placeholder="Category name">
+        </div>
     </div>
-
-
 </section>`

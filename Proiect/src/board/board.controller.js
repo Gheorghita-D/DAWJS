@@ -1,5 +1,5 @@
-export const BoardJs = `
-btn = document.querySelector('button')
+export const BoardJs = 
+`btn = document.querySelector('button')
 section = document.querySelector("section")
 
 
@@ -8,7 +8,7 @@ var selectedEl = []
 btn.addEventListener('click', (e) => {
     var task = document.createElement('li')
     var title = document.createElement('input')
-    title.setAttribute('placeholder','tasks title')
+    title.setAttribute('placeholder','task\\'s title')
     title.style.height =  '30px'
     title.style.margin =  '5px'
     title.style.borderRadius = '5px'
@@ -43,15 +43,16 @@ btn.addEventListener('click', (e) => {
             e.target.parentNode.removeChild(e.target)
 
             fetch('http://localhost:3000/tasks',
-                     {method: 'POST',    
+                     {method: 'POST',
+                     mode: 'cors',    
                      headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Content-Type': 'Application/JSON',
+                        'Accept': 'Application/JSON'
                     },
-                    body: {title: e.target.value}
+                    body: JSON.stringify({title: e.target.value})
                     })
                 .then((response) => {
-                return response.json();
+                return JSON.stringify(response);
               })
               .then((myJson) => {
                 console.log(myJson);
