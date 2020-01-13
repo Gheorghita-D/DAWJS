@@ -96,6 +96,7 @@ function addHandlers(el){
 
     el.addEventListener('dragover', dragOverHandler)
     el.addEventListener('dragleave', dragLeaveHandler)
+    el.addEventListener('dragend', dragEndHandler)
     el.addEventListener('drop', dropHandler)
 }
 
@@ -141,6 +142,12 @@ function dragLeaveHandler(e) {
     this.classList.remove('over');
 }
 
+function dragEndHandler(e){
+    selectedEl.forEach(el =>
+        el.style.opacity = "100%"
+    )
+
+}
 
 function dropHandler(e) {
     if (e.stopPropagation) {
@@ -195,8 +202,6 @@ function newCategoryHandler(e){
     if(key === 13){
         var div = document.createElement("div")
         div.classList.add('list')
-        div.addEventListener("dragover", overList)
-        div.addEventListener("drop", dropOnList)
 
         var label = document.createElement("label")
         label.setAttribute('for', e.target.value + document.querySelectorAll('.list').length)
@@ -209,6 +214,8 @@ function newCategoryHandler(e){
             selectedEl[i].classList.remove('selected')
             ul.appendChild(selectedEl[i])
         }
+        ul.addEventListener("dragover", overList)
+        ul.addEventListener("drop", dropOnList)
 
         var button = document.createElement("button")
         button.classList.add('addTask')
@@ -243,7 +250,7 @@ function dropOnList(e){
     for(var i=0; i<selectedEl.length; i++){
         selectedEl[i].style.opacity = '100%'
         selectedEl[i].classList.remove('selected')
-        this.lastChild.appendChild(selectedEl[i])
+        this.appendChild(selectedEl[i])
     }
 
     selectedEl = []
