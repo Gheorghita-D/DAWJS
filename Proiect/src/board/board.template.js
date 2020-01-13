@@ -1,9 +1,8 @@
-export const BoardHtml = `<section>
+export const BoardHtml =
+`<button id='addCategory'>Add Category</button>
+<section>
     <main>
         <article id="lists">
-            <div class="list"><label for="noCategory">No category</label>
-                <ul id="noCategory"></ul>
-            </div><button>&#x2b;</button>
         </article>
     </main>
     <aside>

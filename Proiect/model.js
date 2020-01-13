@@ -1,13 +1,9 @@
 const mongoose = require("mongoose");
 
 mongoose.connect('mongodb://localhost/tasorDatabase');
-
 mongoose.connection.on("error", (err) => {
-
     console.log("err", err);
-
 });
-
 mongoose.connection.on("connected", (err, res) => {
     console.log("mongoose is connected");
 });
@@ -60,9 +56,6 @@ const enrolledSchema = new Schema({
     id_user: String,
     id_project: String,
 });
-
-
-
 
 
 const UsersModel = mongoose.connection.model('Users', usersSchema)

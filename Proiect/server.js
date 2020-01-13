@@ -1,19 +1,21 @@
 const express = require('express');
 const app = express();
-const path = require('path');
 const router = express.Router();
-const cors = require('cors');
+const path = require('path');
 
+const PORT = 3000;
+app.listen(PORT);
+console.log('Running at Port 3000');
+
+
+//add the router
 app.use('/', router);
 app.use("/static", express.static('./static/'));
 app.use("/src", express.static('./src/'));
-app.use(cors);
-//add the router
 
-app.listen(3000);
 
-console.log('Running at Port 3000');
 
+//routes
 router.get('/',function(req,res){
 	res.sendFile(path.join(__dirname+'/index.html'));
 });
@@ -30,8 +32,11 @@ router.get('/register',function(req,res){
 	res.sendFile(path.join(__dirname+'/index.html'));
 });
 
+
  /*-- adauga in baza de date userul la inregistrare --*/
 const model = require('./model.js');
+
+
 router.use(express.urlencoded());
 router.use(express.json());      // if needed
 router.post('/register', function(request,response){

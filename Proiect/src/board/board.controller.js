@@ -1,11 +1,12 @@
 export const BoardJs = 
-`btn = document.querySelector('button')
-section = document.querySelector("section")
-
+`btns = document.querySelectorAll('.addTask')
 
 var selectedEl = []
+btns.forEach(btn => {
+    btn.addEventListener('click', addTask)
+})
 
-btn.addEventListener('click', (e) => {
+function addTask(e){
     var task = document.createElement('li')
     var title = document.createElement('input')
     title.setAttribute('placeholder','task\\'s title')
@@ -14,7 +15,7 @@ btn.addEventListener('click', (e) => {
     title.style.borderRadius = '5px'
     title.style.padding =  '5px'
     task.appendChild(title)
-    document.getElementById("noCategory").appendChild(task)
+    e.target.previousSibling.appendChild(task)
     title.focus()
 
     task.setAttribute('draggable', 'true')
@@ -60,7 +61,7 @@ btn.addEventListener('click', (e) => {
         }
     })
 
-})
+}
 
 function addCheckEv(cb){
     cb.addEventListener('change', (e) => {
@@ -176,25 +177,18 @@ function dropHandler(e) {
     return false;
 }
 
-section.addEventListener("dragover", overSection)
-section.addEventListener("drop", dropOnSection)
 
-function overSection(e){
-    if (e.preventDefault)
-        e.preventDefault(); // Necessary. Allows us to drop.
+document.querySelector("#addCategory").addEventListener("click", addCategoryHandler)
 
-    return false;
+function addCategoryHandler(e){
+    document.querySelector(".modal").style.display = 'block'
+    document.querySelector('.newCategory').focus()
 }
 
 document.querySelector('.close').addEventListener("click", (e)=>{
     document.querySelector(".modal").style.display = 'none'
 })
 document.querySelector('.newCategory').addEventListener('keypress', newCategoryHandler)
-
-function dropOnSection(e){
-    document.querySelector(".modal").style.display = 'block'
-    document.querySelector('.newCategory').focus()
-}
 
 function newCategoryHandler(e){
     let key = e.which || e.keyCode
@@ -216,10 +210,15 @@ function newCategoryHandler(e){
             ul.appendChild(selectedEl[i])
         }
 
+        var button = document.createElement("button")
+        button.classList.add('addTask')
+        button.innerHTML = '&#x2b;'
+        button.addEventListener('click', addTask)
+
         div.appendChild(label)
         div.appendChild(ul)
-        document.querySelector('#lists').insertBefore(div, 
-            document.querySelector('#lists').lastChild.previousSibling)
+        div.append(button)
+        document.querySelector('#lists').appendChild(div)
 
         selectedEl = []
 
@@ -228,9 +227,6 @@ function newCategoryHandler(e){
 
     }
 }
-
-document.querySelector('.list').addEventListener("dragover", overList)
-document.querySelector('.list').addEventListener("drop", dropOnList)
 
 function overList(e){
     if (e.preventDefault)
