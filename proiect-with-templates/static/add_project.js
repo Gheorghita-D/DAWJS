@@ -88,6 +88,7 @@ function addProject(button){
             project.appendChild(deadline);
             updateProjectListDB(e.target.parentElement.getAttribute("id"), "deadline", text);
             project.removeChild(deadline_input);
+            link.setAttribute("href", "./board?id=" + rand);
             
         }
     })
