@@ -5,7 +5,7 @@
                 <% for (var i in data.cat ) {%>
                         <div class="list">
                             <label for="<%= data.cat[i].name%>"><%= data.cat[i].name%></label>
-                            <ul id="<%= data.cat[i].name%>">
+                            <ul>
                                     <% for (var j in data.cat[i].tickets) {%>
                                         <li class="task" draggable="true" id="<%=data.cat[i].tickets[j].id%> <%=data.cat[i]._id%>">
                                             <input type="checkbox">
