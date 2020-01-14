@@ -1,0 +1,38 @@
+<button id='addCategory'>Add Category</button>
+<section>
+    <main>
+        <article id="lists">
+                <% for (var i in data.cat ) {%>
+                        <div class="list">
+                            <label for="<%= data.cat[i].name%>"><%= data.cat[i].name%></label>
+                            <ul id="<%= data.cat[i].name%>">
+                                    <% for (var j in data.cat[i].tickets) {%>
+                                        <li class="task" draggable="true" id="<%=data.cat[i].tickets[j].id%> <%=data.cat[i]._id%>">
+                                            <input type="checkbox">
+                                            <strong>
+                                                <span><%= data.cat[i].tickets[j].name %></span>
+                                            </strong>
+                                            <span class="drop">×</span>
+                                        </li>
+                                    <%}%>
+                            </ul>
+                            <button class="addTask">+</button>
+                        </div>
+                <%}%>
+        </article>
+    </main>
+    <aside>
+    <div class="row">
+        <div class="column"></div>
+        <div class="column"></div>
+        <div class="column"></div>
+    </div>
+    </aside>
+    <div class="modal">
+        <div class="modalContent">
+            <label class='close'>&times;</label>
+            <input class='newCategory' placeholder="Category name">
+        </div>
+    </div>
+
+</section>
