@@ -87,7 +87,7 @@ app.post('/tasks',function(req,res){
 app.post('/delete', function(req, res){
 
 	var cat = model.Categories;
-	var ID = mongoose.mongo.ObjectID(req.body.id.split(" ")[1]);
+	var ID = req.body.id.split(" ")[1];
 	
 	cat.findByIdAndUpdate(
 		ID,
@@ -105,7 +105,7 @@ app.post('/delete', function(req, res){
 app.post('/add', function(req, res){
 
 	var cat = model.Categories;
-	var ID = mongoose.mongo.ObjectID(req.body.id.split(" ")[1]);
+	var ID = req.body.id.split(" ")[1];
 	cat.findByIdAndUpdate(
 	   ID,
 		{$push : {'tickets' : {id:req.body.id.split(" ")[0], name:req.body.name }}},function(err, mod){
@@ -123,7 +123,7 @@ app.post('/add', function(req, res){
 
 app.post('/addcat', function(req,res){
 	var cat = model.Categories;
-	var ID = mongoose.mongo.ObjectID("5e1cc83426fd042b5830f189");
+	// var ID = mongoose.mongo.ObjectID("5e1cc83426fd042b5830f189");
 	
 	var newcategory = new model.Categories();
 	var ID_cat = mongoose.Types.ObjectId()
@@ -142,5 +142,41 @@ app.post('/addcat', function(req,res){
 	});
 	res.set('Content-Type', 'application/json');
 	res.send({id:ID_cat});
+})
+
+app.post('/addproject', function(req,res){
+	var proj = model.Projects;
+	if(req.body.column_name === "title"){
+		proj.findOneAndUpdate({id: req.body.proj_id},
+			{$set: {title: req.body.data }}, 
+			{upsert: true },
+			function(err, doc){
+				if(err){
+					console.log("Error" + err);
+				}
+		});
+	}else if(req.body.column_name === "description"){
+		proj.findOneAndUpdate({id: req.body.proj_id},
+			{$set: {description: req.body.data }}, 
+			{upsert: true },
+			function(err, doc){
+				if(err){
+					console.log("Error" + err);
+				}
+		});
+	}else if(req.body.column_name === "deadline"){
+		proj.findOneAndUpdate({id: req.body.proj_id},
+			{$set: {deadline: req.body.data }}, 
+			{upsert: true },
+			function(err, doc){
+				if(err){
+					console.log("Error" + err);
+				}
+		});
+	}
+	
+	// var query = {'id':req.body.proj_id};
+	// proj.findOneAndUpdate(query, req.body.content)
+
 })
 
