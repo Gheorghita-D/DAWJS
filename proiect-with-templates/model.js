@@ -26,6 +26,7 @@ const ticketsSchema = new Schema({
     status: Boolean,
     url_proof: String,
     id: String,
+    users: [String]
 });
 
 const categoriesSchema = new Schema({
@@ -40,42 +41,34 @@ const projectsSchema = new Schema({
     description: String,
     deadline: Date,
     id: String,
-});
-
-const assignmentsSchema = new Schema({
-    id_user: String,
-    id_ticket: String,
+    categories: [categoriesSchema],
+    users: [String]
 });
 
 const activitiesSchema = new Schema({
-    id_ticket: String,
+    id_project: String,
+    ticket: String,
     id_User: String,
     operation: String,
+    date: Date
 });
-
-const enrolledSchema = new Schema({
-    id_user: String,
-    id_project: String,
-});
-
-
 
 
 const UsersModel = mongoose.connection.model('Users', usersSchema)
-const TicketsModel = mongoose.connection.model('Tickets', ticketsSchema);
+// const TicketsModel = mongoose.connection.model('Tickets', ticketsSchema);
 const ProjectsModel = mongoose.connection.model('Projects', projectsSchema);
-const CategoriesModel = mongoose.connection.model('Categories', categoriesSchema);
-const AssignmentsModel = mongoose.connection.model('Assignments', assignmentsSchema);
+// const CategoriesModel = mongoose.connection.model('Categories', categoriesSchema);
+// const AssignmentsModel = mongoose.connection.model('Assignments', assignmentsSchema);
 const ActivitiesModel = mongoose.connection.model('Activities', activitiesSchema);
-const EnrollmentsModel = mongoose.connection.model('Enrollments', enrolledSchema);
+// const EnrollmentsModel = mongoose.connection.model('Enrollments', enrolledSchema);
 
 module.exports = {
     Users: UsersModel,
-    Tickets: TicketsModel,
+    // Tickets: TicketsModel,
     Projects: ProjectsModel,
-    Categories: CategoriesModel,
-    Assignments: AssignmentsModel,
+    // Categories: CategoriesModel,
+    // Assignments: AssignmentsModel,
     Activities: ActivitiesModel,
-    Enrollments: EnrollmentsModel,
-    Mongoose:mongoose
+    // Enrollments: EnrollmentsModel,
+    // Mongoose:mongoose
 }
