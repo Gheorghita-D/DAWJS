@@ -12,6 +12,8 @@ body{
 	/* background: url("bg.svg") no-repeat 0% 20%; */
 	/* background-repeat: no-repeat; */
 	background-size: cover;
+	background-attachment: fixed;
+	height: auto;
 }
 /* navigation */
 #nav-container{
@@ -23,6 +25,8 @@ body{
 	background-color:white;
 	padding-left:30px;
 	margin-bottom: 50px;
+	position: sticky;
+	top: 0px;
 }
 #nav{
 	margin-left:auto;
@@ -184,7 +188,7 @@ section{
 }
 .modalContent {
   position: relative;
-  background-color: #53B3EF;
+  background-color: white;
   margin: auto;
   padding: 10px;
   border-style: none;
@@ -206,14 +210,14 @@ section{
 }
 /* The Close Button */
 .close {
-  color: white;
+  color: #D8D8D8;
   float: right;
   font-size: 28px;
   font-weight: bold;
 }
 .close:hover,
 .close:focus {
-  color: #000;
+  color: #3A2638;
   text-decoration: none;
   cursor: pointer;
 }
@@ -223,7 +227,7 @@ section{
 	border-radius: 5px;
 	padding: 10px;
 	width: 80%;
-	background-color: #7BCA93;
+	background-color: #3A2638;
 	color: white;
 }
 .newCategory::placeholder{
@@ -260,8 +264,17 @@ orm {
   
   /* Add a hover effect for buttons */
   button:hover {
-	background-color: rgba(150, 170, 170, 0.7);	
-	opacity: 0.8;
+	background-color: #1A6398;
+  }
+
+  #new-project{
+  	position: sticky;
+  	top: 60px;
+  }
+
+  #addCategory{
+  	position: sticky;
+  	top: 60px;
   }
   
   /* Extra style for the cancel button (red) */

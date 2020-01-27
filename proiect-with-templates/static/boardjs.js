@@ -18,9 +18,10 @@ function randomString(length) {
     }
     return str;
 }
+
 function addTask(button){
     var task = document.createElement('li')
-    task.setAttribute('id', randomString(5) + " " + button.target.previousElementSibling.id); // exista sansa sa se repete
+    // task.setAttribute('id', randomString(5) + " " + button.target.previousElementSibling.id); // exista sansa sa se repete
     var title = document.createElement('input')
     title.setAttribute('placeholder','task\'s title')
     title.style.height =  '30px'
@@ -49,32 +50,32 @@ function addTask(button){
             e.target.parentNode.insertBefore(del, e.target)
             e.target.parentNode.insertBefore(strong, del)
             e.target.parentNode.insertBefore(cb, strong)
-            e.target.parentNode.removeChild(e.target)
 
-            var task = button.target.previousElementSibling.lastChild;
-            console.log(task);
-            fetch('http://localhost:3000/add',
+            fetch('http://localhost:3000/addticket',
                      {method: 'POST',
                      mode: 'cors',    
                      headers: {
                         'Content-Type': 'Application/JSON',
                         'Accept': 'Application/JSON'
                     },
+                    credentials: 'include',
                     body: JSON.stringify(
                         {
-                        cat_id: button.target.id, 
-                        id:task.id, 
-                        name:task.querySelector("span").textContent
+                        cat_id: e.target.parentNode.parentNode.id,
+                        name:task.querySelector("strong span").textContent
                         }
                         
                         )
                     })
                 .then((response) => {
-                return JSON.stringify(response);
+                    return response.json();
               })
               .then((myJson) => {
-                console.log(myJson);
+                task.setAttribute('id', myJson.id)
               });
+
+                e.target.parentNode.removeChild(e.target)
+
 
               // trimit id-ul ticketului la server pentru a-l adauga in baza de date -------- tb fetch probabil
                
@@ -116,17 +117,33 @@ function addDelEv(del){
                                     return value != e.target.parentNode;
                                 });
                 }
-                e.target.parentNode.parentNode.removeChild(e.target.parentNode)
-                console.log(e.target.parentNode.id.split(" "));
+                // console.log(e.target.parentNode.id.split(" "));
 
                 // trimit id-ul ticketului la server pentru a putea sa-l sterg din baza de date -------- tb fetch probabil
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", '/delete', true)
-                xhr.setRequestHeader("Content-Type", "application/json")
-                xhr.send(JSON.stringify({id:e.target.parentNode.id}));
+                // var xhr = new XMLHttpRequest();
+                // xhr.open("POST", '/delete', true)
+                // xhr.setRequestHeader("Content-Type", "application/json")
+                // xhr.send(JSON.stringify({id:e.target.parentNode.id}));
                 // ---------
-
                 
+                fetch('http://localhost:3000/delticket',
+                     {method: 'POST',
+                     mode: 'cors',    
+                     headers: {
+                        'Content-Type': 'Application/JSON',
+                        'Accept': 'Application/JSON'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(
+                        {
+                            id_cat: e.target.parentNode.parentNode.id,
+                            id_ticket: e.target.parentNode.id
+                        }
+                        
+                        )
+                    })
+                
+                e.target.parentNode.parentNode.removeChild(e.target.parentNode)
             })
 }
 
@@ -223,6 +240,7 @@ function addCategoryHandler(e){
 }
 document.querySelector('.close').addEventListener("click", (e)=>{
     document.querySelector(".modal").style.display = 'none'
+    document.querySelector('.newCategory').value = ''
 })
 document.querySelector('.newCategory').addEventListener('keyup', newCategoryHandler)
 function newCategoryHandler(e){
@@ -232,7 +250,7 @@ function newCategoryHandler(e){
         var div = document.createElement("div")
         div.classList.add('list')
         var label = document.createElement("label")
-        label.setAttribute('for', e.target.value + document.querySelectorAll('.list').length)
+        // label.setAttribute('for', e.target.value + document.querySelectorAll('.list').length)
         label.innerHTML = e.target.value
         var ul = document.createElement("ul")
         // ul.setAttribute('id', e.target.value + document.querySelectorAll('.list').length)
@@ -253,8 +271,6 @@ function newCategoryHandler(e){
         document.querySelector('#lists').appendChild(div)
         selectedEl = []
         
-        // e.target.value = ''
-        document.querySelector('.modal').style.display = 'none'
 
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
@@ -266,10 +282,10 @@ function newCategoryHandler(e){
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
                     },
+                    credentials: 'include',
                     body: JSON.stringify(
                         {
-                        name: e.target.value, 
-                        id: e.target.value + document.querySelectorAll('.list').length, 
+                        name: e.target.value,
                         id_project: urlParams.get("id")
                         }
                         
@@ -279,12 +295,13 @@ function newCategoryHandler(e){
                     return response.json();
               })
               .then((myJson) => {
-                console.log(myJson);
+                label.setAttribute('for', myJson.id)
                 ul.setAttribute('id', myJson.id);
-               
               });
         
        
+        e.target.value = ''
+        document.querySelector('.modal').style.display = 'none'
        
         // ul tb sa ii dau ID
 

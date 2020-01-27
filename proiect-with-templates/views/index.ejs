@@ -34,6 +34,7 @@
 
     <!-- <script type="module" src="static/config.js"></script> -->
     <% if(data.page == 'boards'){ %> <script type ="text/javascript" src="/static/boardjs.js" ></script> <% } %>
-	<!-- <script type="JavaScript/text" src="/static/button-navigation.js"></script> -->
+    <% if(data.page == 'projects'){ %> <script type ="text/javascript" src="/static/add_project.js" ></script> <% } %>
+	<script type="JavaScript/text" src="/static/javascript.js"></script>
 </body>
 </html>

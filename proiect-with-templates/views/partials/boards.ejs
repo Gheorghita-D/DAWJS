@@ -4,13 +4,15 @@
         <article id="lists">
                 <% for (var i in data.cat ) {%>
                         <div class="list">
-                            <label for="<%= data.cat[i].name%>"><%= data.cat[i].name%></label>
+                            <label for="<%= data.cat[i]._id%>"><%= data.cat[i].name%></label>
                             <ul id="<%= data.cat[i]._id%>">
-                                    <% for (var j in data.cat[i].tickets) {%>
-                                        <li class="task" draggable="true" id="<%=data.cat[i].tickets[j].id%> <%=data.cat[i]._id%>">
-                                            <input type="checkbox">
+                                    <% for (var j in data.cat[i].id_tickets) {%>
+                                        <li class="task" draggable="true" id="<%=data.cat[i].id_tickets[j]._id%>">
+                                            <input type="checkbox" 
+                                                <% if(data.cat[i].id_tickets[j].status){%> checked <%}%>
+                                            >
                                             <strong>
-                                                <span><%= data.cat[i].tickets[j].name %></span>
+                                                <span><%= data.cat[i].id_tickets[j].name %></span>
                                             </strong>
                                             <span class="drop">×</span>
                                         </li>
@@ -21,13 +23,6 @@
                 <%}%>
         </article>
     </main>
-    <aside>
-    <div class="row">
-        <div class="column"></div>
-        <div class="column"></div>
-        <div class="column"></div>
-    </div>
-    </aside>
     <div class="modal">
         <div class="modalContent">
             <label class='close'>&times;</label>

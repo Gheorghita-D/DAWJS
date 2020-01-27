@@ -10,12 +10,12 @@ mongoose.connection.on("connected", (err, res) => {
 });
 
 
+//database structure
 const Schema = mongoose.Schema;
 
 const usersSchema = new Schema({
-    username: String,
-    password: String,
-    id: String
+    email: String,
+    password: String
 });
 
 const ticketsSchema = new Schema({
@@ -25,50 +25,49 @@ const ticketsSchema = new Schema({
     description: String,
     status: Boolean,
     url_proof: String,
-    id: String,
-    users: [String]
+    id_users: [{type: Schema.Types.ObjectId, ref: 'Users' }]
 });
 
 const categoriesSchema = new Schema({
     name: String,
-    id: String,
-    id_project: String,
-    tickets: [ticketsSchema]
+    id_project: {type: Schema.Types.ObjectId, ref: 'Projects' },
+    id_tickets: [{ type: Schema.Types.ObjectId, ref: 'Tickets'}]
 });
 
 const projectsSchema = new Schema({
     title: String,
     description: String,
     deadline: Date,
-    id: String,
-    categories: [categoriesSchema],
-    users: [String]
+    id_categories: [{ type: Schema.Types.ObjectId, ref: 'Categories'}],
+    id_users: [{type: Schema.Types.ObjectId, ref: 'Users' }]
 });
 
 const activitiesSchema = new Schema({
-    id_project: String,
-    ticket: String,
-    id_User: String,
+    id_project: {type: Schema.Types.ObjectId, ref: 'Projects' },
+    id_ticket: {type: Schema.Types.ObjectId, ref: 'Tickets' },
+    id_user: {type: Schema.Types.ObjectId, ref: 'Users' },
     operation: String,
     date: Date
 });
 
 
+
 const UsersModel = mongoose.connection.model('Users', usersSchema)
-// const TicketsModel = mongoose.connection.model('Tickets', ticketsSchema);
+const TicketsModel = mongoose.connection.model('Tickets', ticketsSchema);
+const CategoriesModel = mongoose.connection.model('Categories', categoriesSchema);
 const ProjectsModel = mongoose.connection.model('Projects', projectsSchema);
-// const CategoriesModel = mongoose.connection.model('Categories', categoriesSchema);
 // const AssignmentsModel = mongoose.connection.model('Assignments', assignmentsSchema);
 const ActivitiesModel = mongoose.connection.model('Activities', activitiesSchema);
 // const EnrollmentsModel = mongoose.connection.model('Enrollments', enrolledSchema);
 
+
 module.exports = {
     Users: UsersModel,
-    // Tickets: TicketsModel,
+    Tickets: TicketsModel,
+    Categories: CategoriesModel,
     Projects: ProjectsModel,
-    // Categories: CategoriesModel,
     // Assignments: AssignmentsModel,
     Activities: ActivitiesModel,
     // Enrollments: EnrollmentsModel,
-    // Mongoose:mongoose
+    Mongoose:mongoose
 }

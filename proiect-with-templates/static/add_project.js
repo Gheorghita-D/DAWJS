@@ -14,6 +14,10 @@ function randomString(length) {
     return str;
 }
 
+function insertAfter(newNode, referenceNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
+
 function addProject(button){
 
     // creez elementele din structura html a unui proiect
@@ -23,6 +27,7 @@ function addProject(button){
     var title = document.createElement('h3');
     var desc = document.createElement('p');
     var deadline = document.createElement('p');
+    var submit = document.createElement('button');
 
     var title_input = document.createElement('input');
     title_input.setAttribute('placeholder', 'project title');
@@ -38,14 +43,12 @@ function addProject(button){
     deadline_input.setAttribute('class', 'input_proiect');
     deadline_input.setAttribute('type', 'date');
 
-    
-    var rand = randomString(8); 
    
     // pun atributele necesare fiecarui element
     project.setAttribute("class", "project");
-    project.setAttribute("id", rand);
     desc.setAttribute("class", "descriere");
     deadline.setAttribute("class", "deadline");
+    submit.textContent = "Add"
 
     // ---
 
@@ -55,14 +58,15 @@ function addProject(button){
     project.appendChild(title_input);
     project.appendChild(desc_input);
     project.appendChild(deadline_input);
+    project.appendChild(submit);
     
     title_input.addEventListener("keyup", (e) =>{
         let key = e.which || e.keyCode
         if(key === 13){
             text = e.target.value;
             title.textContent = text;
-            project.appendChild(title);
-            updateProjectListDB(e.target.parentElement.getAttribute("id"), "title", text);
+            insertAfter(title, title_input);
+            // updateProjectListDB(e.target.parentElement.getAttribute("id"), "title", text);
             project.removeChild(title_input);
             
         }
@@ -73,8 +77,8 @@ function addProject(button){
         if(key === 13){
             text = e.target.value;
             desc.textContent = text;
-            project.appendChild(desc);
-            updateProjectListDB(e.target.parentElement.getAttribute("id"), "description", text);
+            insertAfter(desc, desc_input);
+            // updateProjectListDB(e.target.parentElement.getAttribute("id"), "description", text);
             project.removeChild(desc_input);
             
         }
@@ -85,11 +89,35 @@ function addProject(button){
         if(key === 13){
             text = e.target.value;
             deadline.textContent = text;
-            project.appendChild(deadline);
-            updateProjectListDB(e.target.parentElement.getAttribute("id"), "deadline", text);
+            insertAfter(deadline, deadline_input);
+            // updateProjectListDB(e.target.parentElement.getAttribute("id"), "deadline", text);
             project.removeChild(deadline_input);
-            link.setAttribute("href", "./board?id=" + rand);
             
+        }
+    })
+
+    submit.addEventListener('click', (e) => {
+        if(title.textContent && desc.textContent && deadline.textContent){
+            fetch('http://localhost:3000/addproj',{
+                method: 'POST',
+                mode: 'cors',    
+                headers: {
+                    'Content-Type': 'Application/JSON',
+                    'Accept': 'Application/JSON'
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    proj_title: title.textContent,
+                    proj_description: desc.textContent,
+                    proj_deadline: deadline.textContent
+                })
+            }).then((response) => {
+                    return response.json();
+                }).then((myJson) => {
+                    project.setAttribute('id', myJson.id)
+                    link.setAttribute("href", "./board?id=" + myJson.id);
+                    e.target.parentNode.removeChild(e.target)
+                });
         }
     })
 
@@ -98,20 +126,21 @@ function addProject(button){
 
 function updateProjectListDB(id, name, content){
     
-    fetch('http://localhost:3000/addproject',{
+    fetch('http://localhost:3000/updateproj',{
             method: 'POST',
             mode: 'cors',    
             headers: {
                 'Content-Type': 'Application/JSON',
                 'Accept': 'Application/JSON'
             },
-             body: JSON.stringify({
+            credentials: 'include',
+            body: JSON.stringify({
                 proj_id:id,
                 column_name:name,
                 data:content
             })
         }).then((response) => {
-            return response.json;
+            return response.json();
         }).then((myJson) => {
             console.log(myJson);
         });
