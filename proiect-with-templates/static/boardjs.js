@@ -1,101 +1,113 @@
+function insertAfter(newNode, referenceNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
+
 btns = document.querySelectorAll('.addTask')
 var selectedEl = []
 btns.forEach(btn => {
-    btn.addEventListener('click', addTask)
+    btn.addEventListener('click', newTaskModal)
 });
 
-
-function randomString(length) {
-    var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split('');
-
-    if (! length) {
-        length = Math.floor(Math.random() * chars.length);
-    }
-
-    var str = '';
-    for (var i = 0; i < length; i++) {
-        str += chars[Math.floor(Math.random() * chars.length)];
-    }
-    return str;
+function newTaskModal(e){
+    document.querySelector("#newTaskModal").style.display = 'block'
+    document.querySelector(".newTask input").focus() 
+    document.querySelector(".newTask input").setAttribute('data-cat_id', e.target.previousSibling.id)
 }
 
-function addTask(button){
-    var task = document.createElement('li')
-    // task.setAttribute('id', randomString(5) + " " + button.target.previousElementSibling.id); // exista sansa sa se repete
+document.querySelector('#closeTask').addEventListener("click", (e)=>{
+    document.querySelector("#newTaskModal").style.display = 'none'
     var title = document.createElement('input')
-    title.setAttribute('placeholder','task\'s title')
-    title.style.height =  '30px'
-    title.style.margin =  '5px'
-    title.style.borderRadius = '5px'
-    title.style.padding =  '5px'
-    task.appendChild(title)
-
-    button.target.previousElementSibling.appendChild(task)
-    title.focus()
-    task.setAttribute('draggable', 'true')
-    addHandlers(task)
-    title.addEventListener('keyup', (e) => {
-        let key = e.which || e.keyCode
-        if(key === 13){
-            let name = document.createElement('span')
-            name.innerHTML = e.target.value
-            let strong = document.createElement('strong')
-            strong.appendChild(name)
-            var del = document.createElement('span')
-            del.innerHTML = '&times;'
-            addDelEv(del)
-            var cb = document.createElement('input')
-            cb.setAttribute("type", "checkbox")
-            addCheckEv(cb)
-            e.target.parentNode.insertBefore(del, e.target)
-            e.target.parentNode.insertBefore(strong, del)
-            e.target.parentNode.insertBefore(cb, strong)
-
-            fetch('http://localhost:3000/addticket',
-                     {method: 'POST',
-                     mode: 'cors',    
-                     headers: {
-                        'Content-Type': 'Application/JSON',
-                        'Accept': 'Application/JSON'
-                    },
-                    credentials: 'include',
-                    body: JSON.stringify(
-                        {
-                        cat_id: e.target.parentNode.parentNode.id,
-                        name:task.querySelector("strong span").textContent
-                        }
-                        
-                        )
-                    })
-                .then((response) => {
-                    return response.json();
-              })
-              .then((myJson) => {
-                task.setAttribute('id', myJson.id)
-              });
-
-                e.target.parentNode.removeChild(e.target)
+    title.setAttribute('placeholder', 'task\'s title')
+    title.addEventListener('keyup', addTaskTitle)
+    document.querySelector('.newTask label').parentNode.removeChild(document.querySelector('.newTask label').nextSibling)
+    insertAfter(title, document.querySelector('.newTask label'))
+    // document.querySelectorAll('.newTask input').forEach( function(element, index) {
+    //     element.value = ''
+    // });
+})
 
 
-              // trimit id-ul ticketului la server pentru a-l adauga in baza de date -------- tb fetch probabil
+document.querySelector('.newTask input').addEventListener('keyup', addTaskTitle)
+
+document.querySelectorAll('.newTask input:not(:first-of-type)').forEach(new_task_input => {
+    new_task_input.addEventListener('keyup', addTask)
+});
+
+function addTaskTitle(e) {
+    let key = e.which || e.keyCode
+    if(key === 13){
+
+        fetch('http://localhost:3000/addticket',
+                 {method: 'POST',
+                 mode: 'cors',    
+                 headers: {
+                    'Content-Type': 'Application/JSON',
+                    'Accept': 'Application/JSON'
+                },
+                credentials: 'include',
+                body: JSON.stringify(
+                    {
+                    cat_id: e.target.dataset.cat_id,
+                    name: e.target.value
+                    }
+                    
+                    )
+                })
+            .then((response) => {
+                return response.json();
+          })
+          .then((myJson) => {    
+                var task = document.createElement('li')
+                let name = document.createElement('span')
+                name.innerHTML = e.target.value
+                let strong = document.createElement('strong')
+                strong.appendChild(name)
+                var del = document.createElement('span')
+                del.innerHTML = '&times;'
+                addDelEv(del)
+                var cb = document.createElement('input')
+                cb.setAttribute("type", "checkbox")
+                addCheckEv(cb)
+                task.appendChild(del)
+                task.insertBefore(strong, del)
+                task.insertBefore(cb, strong)
                
-                // var xhr = new XMLHttpRequest();
-                // xhr.open("POST", '/add', true)
-                // xhr.setRequestHeader("Content-Type", "application/json")
-                // var data = JSON.stringify({cat_id: button.target.id, id:task.id, name:task.querySelector("span").textContent});
-                // // console.log(task.id);
-                // console.log(data);
-                // xhr.send();
-                 // ---------
-            }
-    
-     
-     
- 
-    })
-   
-   
+                task.setAttribute('id', myJson.id)
+                task.setAttribute('draggable', 'true')
+                addHandlers(task)
+
+                console.log("#\\3" + e.target.dataset.cat_id[0] + " " + e.target.dataset.cat_id.substr(1))
+                id = e.target.dataset.cat_id
+                if((e.target.dataset.cat_id[0] >= '0') && (e.target.dataset.cat_id[0] <= '9'))
+                    id = "#\\3" + e.target.dataset.cat_id[0] + " " + e.target.dataset.cat_id.substr(1)
+                document.querySelector(id).appendChild(task)
+                var title = document.createElement('span')
+                title.setAttribute('id', 'title')
+                title.textContent = e.target.value
+                insertAfter(title, e.target)
+                e.target.parentNode.removeChild(e.target)
+          });
+
+
+
+          // trimit id-ul ticketului la server pentru a-l adauga in baza de date -------- tb fetch probabil
+           
+            // var xhr = new XMLHttpRequest();
+            // xhr.open("POST", '/add', true)
+            // xhr.setRequestHeader("Content-Type", "application/json")
+            // var data = JSON.stringify({cat_id: button.target.id, id:task.id, name:task.querySelector("span").textContent});
+            // // console.log(task.id);
+            // console.log(data);
+            // xhr.send();
+             // ---------   
+
+    }
 }
+
+function addTask(e){
+
+}
+
 function addCheckEv(cb){
     cb.addEventListener('change', (e) => {
         let fields = e.target.parentNode.childNodes
@@ -125,7 +137,7 @@ function addDelEv(del){
                 // xhr.setRequestHeader("Content-Type", "application/json")
                 // xhr.send(JSON.stringify({id:e.target.parentNode.id}));
                 // ---------
-                
+
                 fetch('http://localhost:3000/delticket',
                      {method: 'POST',
                      mode: 'cors',    
@@ -235,11 +247,11 @@ function dropHandler(e) {
 }
 document.querySelector("#addCategory").addEventListener("click", addCategoryHandler)
 function addCategoryHandler(e){
-    document.querySelector(".modal").style.display = 'block'
+    document.querySelector("#newCatModal").style.display = 'block'
     document.querySelector('.newCategory').focus()
 }
-document.querySelector('.close').addEventListener("click", (e)=>{
-    document.querySelector(".modal").style.display = 'none'
+document.querySelector('#closeCat').addEventListener("click", (e)=>{
+    document.querySelector("#newCatModal").style.display = 'none'
     document.querySelector('.newCategory').value = ''
 })
 document.querySelector('.newCategory').addEventListener('keyup', newCategoryHandler)
@@ -264,7 +276,7 @@ function newCategoryHandler(e){
         var button = document.createElement("button")
         button.classList.add('addTask')
         button.innerHTML = '&#x2b;'
-        button.addEventListener('click', addTask)
+        button.addEventListener('click', newTaskModal)
         div.appendChild(label)
         div.appendChild(ul)
         div.append(button)
@@ -301,7 +313,7 @@ function newCategoryHandler(e){
         
        
         e.target.value = ''
-        document.querySelector('.modal').style.display = 'none'
+        document.querySelector('#newCatModal').style.display = 'none'
        
         // ul tb sa ii dau ID
 
@@ -322,4 +334,18 @@ function dropOnList(e){
         this.appendChild(selectedEl[i])
     }
     selectedEl = []
+}
+
+function randomString(length) {
+    var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split('');
+
+    if (! length) {
+        length = Math.floor(Math.random() * chars.length);
+    }
+
+    var str = '';
+    for (var i = 0; i < length; i++) {
+        str += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return str;
 }

@@ -17,16 +17,23 @@
                                             <span class="drop">×</span>
                                         </li>
                                     <%}%>
-                            </ul>
-                            <button class="addTask">+</button>
+                            </ul><button class="addTask">+</button>
                         </div>
                 <%}%>
         </article>
     </main>
-    <div class="modal">
+    <div id='newCatModal' class="modal">
         <div class="modalContent">
-            <label class='close'>&times;</label>
+            <label id='closeCat' class='close'>&times;</label>
             <input class='newCategory' placeholder="Category name">
+        </div>
+    </div>
+    <div id='newTaskModal' class="modal">
+        <div class="modalContent">
+            <label id='closeTask' class='close'>&times;</label>
+            <div class='newTask'>
+                <label for="title">Title: </label><input id="title" placeholder="task's title">
+            </div>
         </div>
     </div>
 

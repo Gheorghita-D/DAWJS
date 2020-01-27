@@ -27,6 +27,7 @@ body{
 	margin-bottom: 50px;
 	position: sticky;
 	top: 0px;
+	z-index: 20;
 }
 #nav{
 	margin-left:auto;
@@ -233,6 +234,15 @@ section{
 .newCategory::placeholder{
 	color: #D8D8D8;
 }
+.newTask input{
+	height: 30px;
+    margin:  5px;
+    borderRadius: 5px;
+    padding: 10px;
+    background-color: #3A2638;
+    color: white;
+}
+
 
 orm {
 	border: 3px solid #f1f1f1;
@@ -270,11 +280,13 @@ orm {
   #new-project{
   	position: sticky;
   	top: 60px;
+	z-index: 20;
   }
 
   #addCategory{
   	position: sticky;
   	top: 60px;
+	z-index: 20;
   }
   
   /* Extra style for the cancel button (red) */
