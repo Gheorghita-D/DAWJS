@@ -177,7 +177,7 @@ section{
 .modal {
   display: none;
   position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  z-index: 22; /* Sit on top */
   padding-top: 160px; /* Location of the box */
   left: 0;
   top: 0;
@@ -189,6 +189,7 @@ section{
 }
 .modalContent {
   position: relative;
+  z-index: 23;
   background-color: white;
   margin: auto;
   padding: 10px;
@@ -236,13 +237,17 @@ section{
 }
 .newTask input{
 	height: 30px;
+	width: 100%;
     margin:  5px;
     borderRadius: 5px;
     padding: 10px;
-    background-color: #3A2638;
+    background-color: #784F74;
     color: white;
+    clear: both;
 }
-
+.newTask input::placeholder{
+	color: #D8D8D8;
+}
 
 orm {
 	border: 3px solid #f1f1f1;
@@ -280,13 +285,13 @@ orm {
   #new-project{
   	position: sticky;
   	top: 60px;
-	z-index: 20;
+	z-index: 21;
   }
 
   #addCategory{
   	position: sticky;
   	top: 60px;
-	z-index: 20;
+	z-index: 21;
   }
   
   /* Extra style for the cancel button (red) */

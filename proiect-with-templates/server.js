@@ -196,6 +196,9 @@ app.post('/addticket', validateUser, function(req, res){
 
 	new_task._id = ID_task;
 	new_task.name =  req.body.name;
+	new_task.description = req.body.description
+	new_task.start_time = req.body.start_time
+	new_task.deadline = req.body.deadline
 	new_task.status = false
 
 	new_task.save(function(err, saved_task){
@@ -248,22 +251,56 @@ app.post('/delticket', validateUser, function(req, res){
 	 );
 })
 
-app.post('/updateticket', validateUser, function(req, res){
 
+app.post('/updateticket', validateUser, function(req,res){
 	var cat = model.Categories;
-	var ID = req.body.id.split(" ")[1];
-	cat.findByIdAndUpdate(
-	   ID,
-		{$push : {'tickets' : {id:req.body.id.split(" ")[0], name:req.body.name }}},function(err, mod){
-			if(err){
-				console.log(err);
-			}else{
-				console.log("yeey, added task");
-			}
-		}
-	);	
-   res.render('index', {data});
+	if(req.body.column_name === "description"){
+		cat.findOneAndUpdate({_id: req.body.ticket_id},
+			{$set: {description: req.body.data }},
+			function(err, doc){
+				if(err){
+					console.log("Error " + err);
+				}
+		});
+	}else if(req.body.column_name === "start_time"){
+		cat.findOneAndUpdate({_id: req.body.ticket_id},
+			{$set: {start_time: req.body.data }},
+			function(err, doc){
+				if(err){
+					console.log("Error " + err);
+				}
+		});
+	}else if(req.body.column_name === "deadline"){
+		cat.findOneAndUpdate({_id: req.body.ticket_id},
+			{$set: {deadline: req.body.data }},
+			function(err, doc){
+				if(err){
+					console.log("Error " + err);
+				}
+		});
+	}
+	
+	// var query = {'id':req.body.proj_id};
+	// proj.findOneAndUpdate(query, req.body.content)
+
 })
+
+// app.post('/updateticket', validateUser, function(req, res){
+
+// 	var cat = model.Categories;
+// 	var ID = req.body.id.split(" ")[1];
+// 	cat.findByIdAndUpdate(
+// 	   ID,
+// 		{$push : {'tickets' : {id:req.body.id.split(" ")[0], name:req.body.name }}},function(err, mod){
+// 			if(err){
+// 				console.log(err);
+// 			}else{
+// 				console.log("yeey, added task");
+// 			}
+// 		}
+// 	);	
+//    res.render('index', {data});
+// })
 
 app.get('/board', validateUser, function(req,res){
 	model.Projects.findOne({_id: new mongoose.Types.ObjectId(req.query.id)})

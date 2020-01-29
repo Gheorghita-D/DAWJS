@@ -11,100 +11,122 @@ btns.forEach(btn => {
 function newTaskModal(e){
     document.querySelector("#newTaskModal").style.display = 'block'
     document.querySelector(".newTask input").focus() 
-    document.querySelector(".newTask input").setAttribute('data-cat_id', e.target.previousSibling.id)
+    document.querySelector(".newTask").setAttribute('data-cat_id', e.target.previousSibling.id)
 }
 
 document.querySelector('#closeTask').addEventListener("click", (e)=>{
     document.querySelector("#newTaskModal").style.display = 'none'
-    var title = document.createElement('input')
-    title.setAttribute('placeholder', 'task\'s title')
-    title.addEventListener('keyup', addTaskTitle)
-    document.querySelector('.newTask label').parentNode.removeChild(document.querySelector('.newTask label').nextSibling)
-    insertAfter(title, document.querySelector('.newTask label'))
+
+    document.querySelector('.newTask').innerHTML = `
+                <label for="title">Title: </label><input id="title" placeholder="task's title">
+                <label for="description">Description: </label><input id="description" placeholder="task's description">
+                <label for="start_time">Start time: </label><input id="start_time" type="date" placeholder="task's start time">
+                <label for="deadline">Deadline: </label><input id="deadline" type="date" placeholder="task's deadline">
+                <button>Add ticket</button>
+            `
+    document.querySelector('.newTask button').addEventListener('click', addTask)
     // document.querySelectorAll('.newTask input').forEach( function(element, index) {
     //     element.value = ''
     // });
 })
 
 
-document.querySelector('.newTask input').addEventListener('keyup', addTaskTitle)
+document.querySelector('.newTask button').addEventListener('click', addTask)
 
-document.querySelectorAll('.newTask input:not(:first-of-type)').forEach(new_task_input => {
-    new_task_input.addEventListener('keyup', addTask)
-});
+function addTask(e) {
 
-function addTaskTitle(e) {
-    let key = e.which || e.keyCode
-    if(key === 13){
+    title_input = document.querySelector('#title')
+    description_input = document.querySelector('#description')
+    start_time_input = document.querySelector('#start_time')
+    deadline_input = document.querySelector('#deadline')
 
-        fetch('http://localhost:3000/addticket',
-                 {method: 'POST',
-                 mode: 'cors',    
-                 headers: {
-                    'Content-Type': 'Application/JSON',
-                    'Accept': 'Application/JSON'
-                },
-                credentials: 'include',
-                body: JSON.stringify(
-                    {
-                    cat_id: e.target.dataset.cat_id,
-                    name: e.target.value
-                    }
-                    
-                    )
-                })
-            .then((response) => {
-                return response.json();
-          })
-          .then((myJson) => {    
-                var task = document.createElement('li')
-                let name = document.createElement('span')
-                name.innerHTML = e.target.value
-                let strong = document.createElement('strong')
-                strong.appendChild(name)
-                var del = document.createElement('span')
-                del.innerHTML = '&times;'
-                addDelEv(del)
-                var cb = document.createElement('input')
-                cb.setAttribute("type", "checkbox")
-                addCheckEv(cb)
-                task.appendChild(del)
-                task.insertBefore(strong, del)
-                task.insertBefore(cb, strong)
-               
-                task.setAttribute('id', myJson.id)
-                task.setAttribute('draggable', 'true')
-                addHandlers(task)
-
-                console.log("#\\3" + e.target.dataset.cat_id[0] + " " + e.target.dataset.cat_id.substr(1))
-                id = e.target.dataset.cat_id
-                if((e.target.dataset.cat_id[0] >= '0') && (e.target.dataset.cat_id[0] <= '9'))
-                    id = "#\\3" + e.target.dataset.cat_id[0] + " " + e.target.dataset.cat_id.substr(1)
-                document.querySelector(id).appendChild(task)
-                var title = document.createElement('span')
-                title.setAttribute('id', 'title')
-                title.textContent = e.target.value
-                insertAfter(title, e.target)
-                e.target.parentNode.removeChild(e.target)
-          });
-
-
-
-          // trimit id-ul ticketului la server pentru a-l adauga in baza de date -------- tb fetch probabil
+    fetch('http://localhost:3000/addticket',
+             {method: 'POST',
+             mode: 'cors',    
+             headers: {
+                'Content-Type': 'Application/JSON',
+                'Accept': 'Application/JSON'
+            },
+            credentials: 'include',
+            body: JSON.stringify(
+                {
+                cat_id: e.target.parentNode.dataset.cat_id,
+                title: title_input.value,
+                description: description_input.value,
+                start_time: new Date(start_time_input.value),
+                deadline: new Date(deadline_input.value)
+                }
+                
+                )
+            })
+        .then((response) => {
+            return response.json();
+      })
+      .then((myJson) => {
+            var task = document.createElement('li')
+            let name = document.createElement('span')
+            name.innerHTML = title_input.value
+            let strong = document.createElement('strong')
+            strong.appendChild(name)
+            var del = document.createElement('span')
+            del.innerHTML = '&times;'
+            addDelEv(del)
+            var cb = document.createElement('input')
+            cb.setAttribute("type", "checkbox")
+            addCheckEv(cb)
+            task.appendChild(del)
+            task.insertBefore(strong, del)
+            task.insertBefore(cb, strong)
            
-            // var xhr = new XMLHttpRequest();
-            // xhr.open("POST", '/add', true)
-            // xhr.setRequestHeader("Content-Type", "application/json")
-            // var data = JSON.stringify({cat_id: button.target.id, id:task.id, name:task.querySelector("span").textContent});
-            // // console.log(task.id);
-            // console.log(data);
-            // xhr.send();
-             // ---------   
+            task.setAttribute('id', myJson.id)
+            task.setAttribute('draggable', 'true')
+            addHandlers(task)
 
-    }
-}
+            id = e.target.parentNode.dataset.cat_id
+            if((e.target.parentNode.dataset.cat_id[0] >= '0') && (e.target.parentNode.dataset.cat_id[0] <= '9'))
+                id = "#\\3" + e.target.parentNode.dataset.cat_id[0] + " " + e.target.parentNode.dataset.cat_id.substr(1)
+            document.querySelector(id).appendChild(task)
 
-function addTask(e){
+
+            var title = document.createElement('span')
+            title.setAttribute('id', 'title')
+            title.textContent = title_input.value
+            insertAfter(title, title_input)
+            title_input.parentNode.removeChild(title_input)            
+
+            var description = document.createElement('span')
+            description.setAttribute('id', 'description')
+            description.textContent = description_input.value
+            insertAfter(description, description_input)
+            description_input.parentNode.removeChild(description_input)            
+
+            var start_time = document.createElement('span')
+            start_time.setAttribute('id', 'start_time')
+            start_time.textContent = start_time.value
+            insertAfter(start_time, start_time_input)
+            start_time_input.parentNode.removeChild(start_time_input)            
+
+            var deadline = document.createElement('span')
+            deadline.setAttribute('id', 'deadline')
+            deadline.textContent = deadline_input.value
+            insertAfter(deadline, deadline_input)
+            deadline_input.parentNode.removeChild(deadline_input)
+
+            e.target.parentNode.removeChild(e.target)
+      });
+
+
+
+      // trimit id-ul ticketului la server pentru a-l adauga in baza de date -------- tb fetch probabil
+       
+        // var xhr = new XMLHttpRequest();
+        // xhr.open("POST", '/add', true)
+        // xhr.setRequestHeader("Content-Type", "application/json")
+        // var data = JSON.stringify({cat_id: button.target.id, id:task.id, name:task.querySelector("span").textContent});
+        // // console.log(task.id);
+        // console.log(data);
+        // xhr.send();
+         // ---------   
 
 }
 
