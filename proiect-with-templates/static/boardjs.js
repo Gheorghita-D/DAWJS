@@ -429,3 +429,38 @@ document.querySelector("#closeAct").addEventListener('click', (e)=>{
     document.querySelector("#newActModal").style.display = 'none'
     document.querySelector("#activities-container").innerHTML = ''
 })
+
+document.querySelector("#addUser").addEventListener('click', (e)=>{
+  document.querySelector("#newUserModal").style.display = 'block'
+})
+document.querySelector("#closeUser").addEventListener('click', (e)=>{
+    document.querySelector("#newUserModal").style.display = 'none'
+    // document.querySelector("#activities-container").innerHTML = ''
+})
+document.querySelector("#addUserToProj").addEventListener('keyup', (e)=>{
+    let key = e.which || e.keyCode
+    if(key === 13){
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+      fetch(`http://localhost:3000/userToProject/${urlParams.get("id")}`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+                    'Content-Type': 'Application/JSON',
+                    'Accept': 'Application/JSON'
+                },
+                credentials: 'include',
+      body: JSON.stringify({email: e.target.value})
+      }
+      ).then((res) => {
+        data = res.json();
+        return data;
+      }).then((json)=>{
+
+    
+    
+  })  
+      document.querySelector("#newUserModal").style.display = 'none'
+    e.target.value = 'none'
+    }
+})

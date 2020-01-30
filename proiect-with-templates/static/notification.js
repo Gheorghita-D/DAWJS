@@ -37,7 +37,7 @@ function askNotificationPermission() {
 
 
 function notify(deadline, task, x){
-    var text = "You have a task for tommorow"
+    var text = "You have a project due for tommorow"
     if(x == 1){
          text = 'HEY! Your project is now overdue.';
     }

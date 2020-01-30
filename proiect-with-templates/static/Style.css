@@ -499,11 +499,14 @@ a {
 
 #activities {
 	position: absolute;
-	top: 180px;
+	top: 250px;
 	right: 50px;
 	width: 100px;
 	height: 50px;
 }
 #newActModal{
+	display: none;
+}
+#newUserModal{
 	display: none;
 }

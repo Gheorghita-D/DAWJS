@@ -155,6 +155,24 @@ app.post('/addproj', validateUser, function(req, res){
   	res.send({id: proj_id})
 })
 
+app.post('/userToProject/:id_proj', validateUser, function(req, res){
+	model.Users.findOne({email: req.body.email}, (err, user)=>{
+
+
+  	model.Projects.findByIdAndUpdate(req.params.id_proj,
+		{$push: {id_users: user._id }},
+		function (error, success) {
+	        if (error) {
+	            // console.log(error);
+	        } else {
+	            // console.log(success);
+	        }
+    	}
+	);
+
+	})
+})
+
 
 
 
