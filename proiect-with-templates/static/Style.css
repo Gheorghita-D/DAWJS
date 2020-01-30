@@ -15,6 +15,7 @@ body{
 	background-attachment: fixed;
 	height: auto;
 }
+
 /* navigation */
 #nav-container{
 	display:flex;
@@ -494,4 +495,15 @@ a {
 .project input[type="date"]::-webkit-calendar-picker-indicator { }
 .project input[type='date']::-webkit-datetime-edit-month-field, .project input[type='date']::-webkit-datetime-edit-day-field, .project input[type='date']::-webkit-datetime-edit-year-field {
 	color: #D8D8D8;
+}
+
+#activities {
+	position: absolute;
+	top: 180px;
+	right: 50px;
+	width: 100px;
+	height: 50px;
+}
+#newActModal{
+	display: none;
 }

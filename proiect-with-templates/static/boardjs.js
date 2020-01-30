@@ -402,3 +402,30 @@ function randomString(length) {
     }
     return str;
 }
+document.querySelector("#activities").addEventListener('click', (e)=>{
+  document.querySelector("#newActModal").style.display = 'block'
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+  fetch(`http://localhost:3000/activities/${urlParams.get("id")}`, {
+    method: 'GET',
+    mode: 'cors',
+    headers: {
+                'Content-Type': 'Application/JSON',
+                'Accept': 'Application/JSON'
+            },
+            credentials: 'include'
+  }).then((res) => {
+    data = res.json();
+    return data;
+  }).then((json)=>{
+    json.forEach( function(element, index) {
+        div = document.createElement('div')
+        div.innerHTML = element.operation
+        document.querySelector('#activities-container').appendChild(div)
+    });
+  })  
+})
+document.querySelector("#closeAct").addEventListener('click', (e)=>{
+    document.querySelector("#newActModal").style.display = 'none'
+    document.querySelector("#activities-container").innerHTML = ''
+})

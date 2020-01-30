@@ -70,9 +70,11 @@ function notifyDeadlines(){
             
             if(deadline < today){
                 notify(deadline, task, 1);
+                console.log("11")
             }else if(deadline-today < 86400000){ // miliseconds in a day
                 notify(deadline, task, 0);
-            } 
+                console.log("22");
+            }
         }
 
 
@@ -142,6 +144,7 @@ var newProj = 0;
 var newTask = 0;
 if(window.location.pathname == "/projects"){
     notifyDeadlines();
+
 }
 if(window.location.pathname == "/projects"){
     if(newTask != 0){

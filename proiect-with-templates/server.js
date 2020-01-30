@@ -196,7 +196,7 @@ app.get('/logout', validateUser, function(req,res) {
 app.get('/activities/:projectid', function(req,res) {
 
 	model.Activities.find({
-		id_project: projectid
+		id_project: req.params.projectid
 	}, (err, activities) => {
 		if(err) {
 			console.log(err)
