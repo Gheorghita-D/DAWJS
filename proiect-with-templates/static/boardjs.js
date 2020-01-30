@@ -24,6 +24,7 @@ function closedNTM(e){
                 <label for="description">Description: </label><input id="description" placeholder="task's description">
                 <label for="start_time">Start time: </label><input id="start_time" type="date" placeholder="task's start time">
                 <label for="deadline">Deadline: </label><input id="deadline" type="date" placeholder="task's deadline">
+                <label for="url_proof">Proof: </label><input id="url_proof" placeholder="proof">
                 <button>Add ticket</button>
             `
     document.querySelector('.newTask button').addEventListener('click', addTask)
@@ -41,6 +42,7 @@ function addTask(e) {
     description_input = document.querySelector('#description')
     start_time_input = document.querySelector('#start_time')
     deadline_input = document.querySelector('#deadline')
+    url_proof_input = document.querySelector('#url_proof')
 
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -60,6 +62,7 @@ function addTask(e) {
                 description: description_input.value,
                 start_time: new Date(start_time_input.value),
                 deadline: new Date(deadline_input.value),
+                url_proof: url_proof_input.value,
 
                 operation: 'Ticket with title ' + title_input.value  + ' was added',
                 id_project: urlParams.get("id"),
