@@ -1,0 +1,41 @@
+const onLogout = () => {
+  fetch("http://localhost:3000/logout",
+    {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      credentials: 'include',
+    }).then((res) => {
+      console.log(res)
+    })
+}
+
+
+app.post('/ticket-status/:ticketid', validateUser, function(req,res) {
+	var ticketModel = model.Tickets;
+
+	ticketModel.findOneAndUpdate({
+		_id: res.params.ticketid,
+	},
+	{$set: {status: !status}}, (err, doc) => {
+		if(err) {
+			console.log('Error:' + err)
+			return;
+		} else {
+			res.status.send(401);
+		}
+	})
+	
+})
+
+
+app.get('/logout', validateUser, function(req,res) {
+	data = {page: "login"} 
+	res.clearCookie('token')
+	res.redirect('/login')
+  })
+
+<a href="/login" onclick="onLogout(); return false">Logout</a>
