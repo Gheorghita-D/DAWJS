@@ -15,7 +15,7 @@
 		<p id="logo">tasor</p>
 		<div id="nav">
 			<a href="/projects" onclick="onNavigate('/projects'); return false">Projects</a>
-			
+  			<a href="/logout" onclick="onLogout(); return false">Logout</a>
 			<a href="/login" onclick="onNavigate('/login'); return false;">Login</a>
 			<a href="/register" onclick="onNavigate('/register'); return false">Register</a>
 		
@@ -36,5 +36,6 @@
     <% if(data.page == 'boards'){ %> <script type ="text/javascript" src="/static/boardjs.js" ></script> <% } %>
     <% if(data.page == 'projects'){ %> <script type ="text/javascript" src="/static/add_project.js" ></script> <% } %>
 	<script type="JavaScript/text" src="/static/javascript.js"></script>
+	<script type="text/javascript" src ="/static/notification.js"></script>
 </body>
 </html>

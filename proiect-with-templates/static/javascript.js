@@ -15,3 +15,18 @@ const onNavigate = (pathname) => {
       }
     }
   }
+
+const onLogout = () => {
+  fetch("http://localhost:3000/logout",
+    {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      credentials: 'include',
+    }).then((res) => {
+      console.log(res)
+    })
+}

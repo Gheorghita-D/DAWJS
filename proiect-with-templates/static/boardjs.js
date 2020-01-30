@@ -14,7 +14,9 @@ function newTaskModal(e){
     document.querySelector(".newTask").setAttribute('data-cat_id', e.target.previousSibling.id)
 }
 
-document.querySelector('#closeTask').addEventListener("click", (e)=>{
+document.querySelector('#closeTask').addEventListener("click", closedNTM)
+
+function closedNTM(e){
     document.querySelector("#newTaskModal").style.display = 'none'
 
     document.querySelector('.newTask').innerHTML = `
@@ -28,7 +30,7 @@ document.querySelector('#closeTask').addEventListener("click", (e)=>{
     // document.querySelectorAll('.newTask input').forEach( function(element, index) {
     //     element.value = ''
     // });
-})
+}
 
 
 document.querySelector('.newTask button').addEventListener('click', addTask)
@@ -39,6 +41,9 @@ function addTask(e) {
     description_input = document.querySelector('#description')
     start_time_input = document.querySelector('#start_time')
     deadline_input = document.querySelector('#deadline')
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
 
     fetch('http://localhost:3000/addticket',
              {method: 'POST',
@@ -54,7 +59,10 @@ function addTask(e) {
                 title: title_input.value,
                 description: description_input.value,
                 start_time: new Date(start_time_input.value),
-                deadline: new Date(deadline_input.value)
+                deadline: new Date(deadline_input.value),
+
+                operation: 'Ticket with title ' + title_input.value  + ' was added',
+                id_project: urlParams.get("id"),
                 }
                 
                 )
@@ -88,31 +96,36 @@ function addTask(e) {
             document.querySelector(id).appendChild(task)
 
 
-            var title = document.createElement('span')
-            title.setAttribute('id', 'title')
-            title.textContent = title_input.value
-            insertAfter(title, title_input)
-            title_input.parentNode.removeChild(title_input)            
+            // var title = document.createElement('span')
+            // title.setAttribute('id', 'title')
+            // title.textContent = title_input.value
+            // insertAfter(title, title_input)
+            // title_input.parentNode.removeChild(title_input)            
 
-            var description = document.createElement('span')
-            description.setAttribute('id', 'description')
-            description.textContent = description_input.value
-            insertAfter(description, description_input)
-            description_input.parentNode.removeChild(description_input)            
+            // var description = document.createElement('span')
+            // description.setAttribute('id', 'description')
+            // description.textContent = description_input.value
+            // insertAfter(description, description_input)
+            // description_input.parentNode.removeChild(description_input)            
 
-            var start_time = document.createElement('span')
-            start_time.setAttribute('id', 'start_time')
-            start_time.textContent = start_time.value
-            insertAfter(start_time, start_time_input)
-            start_time_input.parentNode.removeChild(start_time_input)            
+            // var start_time = document.createElement('span')
+            // start_time.setAttribute('id', 'start_time')
+            // start_time.textContent = start_time_input.value
+            // console.log(start_time_input.value)
+            // insertAfter(start_time, start_time_input)
+            // start_time_input.parentNode.removeChild(start_time_input)            
 
-            var deadline = document.createElement('span')
-            deadline.setAttribute('id', 'deadline')
-            deadline.textContent = deadline_input.value
-            insertAfter(deadline, deadline_input)
-            deadline_input.parentNode.removeChild(deadline_input)
+            // var deadline = document.createElement('span')
+            // deadline.setAttribute('id', 'deadline')
+            // deadline.textContent = deadline_input.value
+            // insertAfter(deadline, deadline_input)
+            // deadline_input.parentNode.removeChild(deadline_input)
 
-            e.target.parentNode.removeChild(e.target)
+            var div = e.target.parentNode
+            div.innerHTML = `<span style="color: green; font-size: x-large;">Task successfully added!</span>`
+            setTimeout(closedNTM, 2000)
+
+
       });
 
 
@@ -138,12 +151,26 @@ function addCheckEv(cb){
             fields[1].style.opacity = 0.2
             fields[2].style.opacity = 0.3
         }else{
-            e.target.parentNode.style.backgroundColor = 'rgba(200, 200, 200, 0.5)'
+            e.target.parentNode.style.backgroundColor = 'rgba(255, 255, 255, 1)'
             fields[1].style.opacity = 1
             fields[2].style.opacity = 1
         }
+
+         fetch('http://localhost:3000/ticket-status/' + e.target.parentNode.id,
+                 {method: 'POST',
+                 mode: 'cors',    
+                 headers: {
+                    'Content-Type': 'Application/JSON',
+                    'Accept': 'Application/JSON'
+                },
+                credentials: 'include',
+                body: JSON.stringify({status: e.target.checked})
+                })
     })
+
+   
 }
+
 function addDelEv(del){
     del.addEventListener('click', (e) => {
                 if(selectedEl.includes(e.target.parentNode)){
@@ -159,6 +186,8 @@ function addDelEv(del){
                 // xhr.setRequestHeader("Content-Type", "application/json")
                 // xhr.send(JSON.stringify({id:e.target.parentNode.id}));
                 // ---------
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
 
                 fetch('http://localhost:3000/delticket',
                      {method: 'POST',
@@ -171,7 +200,8 @@ function addDelEv(del){
                     body: JSON.stringify(
                         {
                             id_cat: e.target.parentNode.parentNode.id,
-                            id_ticket: e.target.parentNode.id
+                            id_ticket: e.target.parentNode.id,
+                            id_project: urlParams.get("id"),
                         }
                         
                         )
@@ -320,7 +350,8 @@ function newCategoryHandler(e){
                     body: JSON.stringify(
                         {
                         name: e.target.value,
-                        id_project: urlParams.get("id")
+                        id_project: urlParams.get("id"),
+                        operation: 'Category with title ' +  e.target.value + ' was added',
                         }
                         
                     )

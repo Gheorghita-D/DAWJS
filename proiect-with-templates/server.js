@@ -188,18 +188,53 @@ app.post('/addproj', validateUser, function(req, res){
 // 	res.end();
 // });
 
+app.get('/logout', validateUser, function(req,res) {
+		res.clearCookie('token');
+		res.redirect('/login');
+  })
+
+app.get('/activities/:projectid', function(req,res) {
+
+	model.Activities.find({
+		id_project: projectid
+	}, (err, activities) => {
+		if(err) {
+			console.log(err)
+		}
+
+		res.send(activities)
+	})
+
+
+})
 
 app.post('/addticket', validateUser, function(req, res){
 
 	var new_task = new model.Tickets();
 	var ID_task = new mongoose.Types.ObjectId()
+	var activity = new model.Activities();
 
 	new_task._id = ID_task;
-	new_task.name =  req.body.name;
+	new_task.name =  req.body.title;
 	new_task.description = req.body.description
 	new_task.start_time = req.body.start_time
 	new_task.deadline = req.body.deadline
 	new_task.status = false
+
+	var id_project = req.body.id_project;
+	var operation = req.body.operation;
+	var date = Date.now();
+
+	activity.id_project = id_project
+	activity.date = date
+	activity.operation = operation;
+
+	activity.save(function(err){
+		if(err) {
+			console.log(err)
+		}
+		console.log('Am adaugat activitate')
+	});
 
 	new_task.save(function(err, saved_task){
 		if(err){
@@ -228,6 +263,29 @@ app.post('/delticket', validateUser, function(req, res){
 
 	var cat = model.Categories;
 
+
+	model.Tickets.findOne({
+		_id: req.body.id_ticket,
+	}, (err, ticket) => {
+	
+		var activity = new model.Activities()
+		var date = Date.now();
+		var id_project = req.body.id_project;
+		var operation = 'Ticket with title ' + ticket.name + ' was deleted'
+
+		activity.id_project = id_project;
+		activity.operation = operation;
+		activity.date = date;
+
+		activity.save((err) => {
+			if(err) {
+				console.log(err)
+			}
+		})
+	})
+
+	
+
 	model.Tickets.findByIdAndRemove(req.body.id_ticket, 
 		function(err, success){
 			if(err){
@@ -249,6 +307,23 @@ app.post('/delticket', validateUser, function(req, res){
 				 }
 		 	}
 	 );
+	res.send('Success')
+})
+
+app.post('/ticket-status/:ticketid', validateUser, function(req,res) {
+	var ticketModel = model.Tickets;
+
+	ticketModel.findOneAndUpdate({
+		_id: req.params.ticketid,
+	},
+	{$set: {status: req.body.status}}, (err, doc) => {
+		if(err) {
+			console.log('Error:' + err)
+			return;
+		}
+	})
+	
+	res.end();
 })
 
 
@@ -325,7 +400,23 @@ app.post('/addcat', validateUser, function(req,res){
 	// var ID = mongoose.mongo.ObjectID("5e1cc83426fd042b5830f189");
 	
 	var newcategory = new model.Categories();
-	var ID_cat = new mongoose.Types.ObjectId()
+	var ID_cat = new mongoose.Types.ObjectId();
+	var activity = new model.Activities();
+
+	var project_id = req.body.id_project;
+	var activty_operation = req.body.operation;
+	var activity_date = Date.now();
+
+	activity.id_project = new mongoose.Types.ObjectId(project_id);
+	activity.operation = activty_operation;
+	activity.date = activity_date;
+
+	activity.save((err) => {
+		if(err) {
+			console.log('Nu s-a adaugat activitate')
+		}
+		console.log('activitate adaugata cu succes')
+	})
 
 	newcategory._id = ID_cat;
 	newcategory.name =  req.body.name;
@@ -351,4 +442,37 @@ app.post('/addcat', validateUser, function(req,res){
 
 	res.set('Content-Type', 'application/json');
 	res.send({id: ID_cat});
+})
+
+
+
+app.get('/projinfo', validateUser, function(req,res){
+	model.Projects.find({id_users: req.body.id_user}, '', function(err, projects){
+		data = {
+			page: "projects",
+			proj: projects
+		};
+	});
+		res.send(data);
+	
+})
+
+app.post('/catinfo', validateUser, function(req, res){
+	console.log(req.body);
+	model.Projects.findOne({_id: req.body.id})
+	//'populate' replaces ObjectIds with actual documents
+	//id_categories become documents, then their id_tickets become documents
+	.populate({
+    	path: 'id_categories',
+    	populate: { path: 'id_tickets' }
+  	})
+	.exec(
+		function(err, proj){
+			data = {
+				page: "boards",
+				cat: proj.id_categories
+			};
+			res.send(data);
+	});
+
 })

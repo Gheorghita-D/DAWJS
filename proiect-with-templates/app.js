@@ -56,8 +56,6 @@ const projectsSchema = new Schema({
 
 const activitiesSchema = new Schema({
     id_project: {type: Schema.Types.ObjectId, ref: 'Projects' },
-    id_ticket: {type: Schema.Types.ObjectId, ref: 'Tickets' },
-    id_user: {type: Schema.Types.ObjectId, ref: 'Users' },
     operation: String,
     date: Date
 });

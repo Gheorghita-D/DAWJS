@@ -7,14 +7,11 @@
                             <label for="<%= data.cat[i]._id%>"><%= data.cat[i].name%></label>
                             <ul id="<%= data.cat[i]._id%>">
                                     <% for (var j in data.cat[i].id_tickets) {%>
-                                        <li class="task" draggable="true" id="<%=data.cat[i].id_tickets[j]._id%>">
-                                            <input type="checkbox" 
+                                        <li <% if(data.cat[i].id_tickets[j].status){%> style="background-color: rgba(100, 200, 100, 0.5);" <%}%> class="task" draggable="true" id="<%=data.cat[i].id_tickets[j]._id%>"><input type="checkbox" 
                                                 <% if(data.cat[i].id_tickets[j].status){%> checked <%}%>
-                                            >
-                                            <strong>
+                                            ><strong <% if(data.cat[i].id_tickets[j].status){%> style="opacity:0.2" <%}%>>
                                                 <span><%= data.cat[i].id_tickets[j].name %></span>
-                                            </strong>
-                                            <span class="drop">×</span>
+                                            </strong><span <% if(data.cat[i].id_tickets[j].status){%> style="opacity:0.3" <%}%> class="drop">×</span>
                                         </li>
                                     <%}%>
                             </ul><button class="addTask">+</button>
@@ -34,8 +31,8 @@
             <div class='newTask'>
                 <label for="title">Title: </label><input id="title" placeholder="task's title">
                 <label for="description">Description: </label><input id="description" placeholder="task's description">
-                <label for="start_time">Start time: </label><input id="start_time" type="date" placeholder="task's start time">
-                <label for="deadline">Deadline: </label><input id="deadline" type="date" placeholder="task's deadline">
+                <label for="start_time">Start time: </label><input id="start_time" type="date">
+                <label for="deadline">Deadline: </label><input id="deadline" type="date">
                 <button>Add ticket</button>
             </div>
         </div>

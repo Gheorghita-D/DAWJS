@@ -235,6 +235,15 @@ section{
 .newCategory::placeholder{
 	color: #D8D8D8;
 }
+.newTask{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	opacity: 0.9;
+	border-radius: 15px;
+	background-color: rbg(200,200,200);
+	clear: both;
+}
 .newTask input{
 	height: 30px;
 	width: 100%;
@@ -248,6 +257,34 @@ section{
 .newTask input::placeholder{
 	color: #D8D8D8;
 }
+/* Removes the clear button from date inputs */
+.newTask input[type="date"]::-webkit-clear-button {
+    display: none;
+}
+/* Removes the spin button */
+.newTask input[type="date"]::-webkit-inner-spin-button { 
+    display: none;
+}
+ /*▼ select */
+.newTask input[type="date"]::-webkit-calendar-picker-indicator { }
+.newTask input[type='date']::-webkit-datetime-edit-month-field, .newTask input[type='date']::-webkit-datetime-edit-day-field, .newTask input[type='date']::-webkit-datetime-edit-year-field {
+	color: #D8D8D8;
+}
+.newTask span{
+	display: block;
+	clear: both;
+	font-size: x-large;
+	color: black;
+	font-weight: 500;
+	margin-bottom: 20px;
+}
+.newTask label {
+	font-size: xx-large;
+	font-weight: 600;
+	text-indent: 4px;
+	color: #565656;
+}
+
 
 orm {
 	border: 3px solid #f1f1f1;
@@ -431,4 +468,30 @@ a {
 	list-style-type: none;
 	padding:20px;
 	background-color:white;
+}
+.project input{
+	height: 30px;
+	width: 100%;
+    margin:  5px;
+    borderRadius: 5px;
+    padding: 10px;
+    background-color: #784F74;
+    color: white;
+    clear: both;
+}
+.project input::placeholder{
+	color: #D8D8D8;
+}
+/* Removes the clear button from date inputs */
+.project input[type="date"]::-webkit-clear-button {
+    display: none;
+}
+/* Removes the spin button */
+.project input[type="date"]::-webkit-inner-spin-button { 
+    display: none;
+}
+ /*▼ select */
+.project input[type="date"]::-webkit-calendar-picker-indicator { }
+.project input[type='date']::-webkit-datetime-edit-month-field, .project input[type='date']::-webkit-datetime-edit-day-field, .project input[type='date']::-webkit-datetime-edit-year-field {
+	color: #D8D8D8;
 }

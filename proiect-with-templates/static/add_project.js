@@ -59,45 +59,9 @@ function addProject(button){
     project.appendChild(desc_input);
     project.appendChild(deadline_input);
     project.appendChild(submit);
-    
-    title_input.addEventListener("keyup", (e) =>{
-        let key = e.which || e.keyCode
-        if(key === 13){
-            text = e.target.value;
-            title.textContent = text;
-            insertAfter(title, title_input);
-            // updateProjectListDB(e.target.parentElement.getAttribute("id"), "title", text);
-            project.removeChild(title_input);
-            
-        }
-    })
-
-    desc_input.addEventListener("keyup", (e) =>{
-        let key = e.which || e.keyCode
-        if(key === 13){
-            text = e.target.value;
-            desc.textContent = text;
-            insertAfter(desc, desc_input);
-            // updateProjectListDB(e.target.parentElement.getAttribute("id"), "description", text);
-            project.removeChild(desc_input);
-            
-        }
-    })
-
-    deadline_input.addEventListener("keyup", (e) =>{
-        let key = e.which || e.keyCode
-        if(key === 13){
-            text = e.target.value;
-            deadline.textContent = text;
-            insertAfter(deadline, deadline_input);
-            // updateProjectListDB(e.target.parentElement.getAttribute("id"), "deadline", text);
-            project.removeChild(deadline_input);
-            
-        }
-    })
 
     submit.addEventListener('click', (e) => {
-        if(title.textContent && desc.textContent && deadline.textContent){
+        if(title_input.value && desc_input.value && deadline_input.value){
             fetch('http://localhost:3000/addproj',{
                 method: 'POST',
                 mode: 'cors',    
@@ -107,13 +71,29 @@ function addProject(button){
                 },
                 credentials: 'include',
                 body: JSON.stringify({
-                    proj_title: title.textContent,
-                    proj_description: desc.textContent,
-                    proj_deadline: deadline.textContent
+                    proj_title: title_input.value,
+                    proj_description: desc_input.value,
+                    proj_deadline: new Date(deadline_input.value)
                 })
             }).then((response) => {
                     return response.json();
                 }).then((myJson) => {
+                    text = title_input.value;
+                    title.textContent = text;
+                    insertAfter(title, title_input);
+                    project.removeChild(title_input);
+
+                    text = desc_input.value;
+                    desc.textContent = text;
+                    insertAfter(desc, desc_input);
+                    project.removeChild(desc_input);
+
+                    text = new Date(deadline_input.value);
+                    deadline.textContent = text;
+                    insertAfter(deadline, deadline_input);
+                    project.removeChild(deadline_input);
+
+
                     project.setAttribute('id', myJson.id)
                     link.setAttribute("href", "./board?id=" + myJson.id);
                     e.target.parentNode.removeChild(e.target)
