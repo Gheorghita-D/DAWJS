@@ -238,6 +238,7 @@ app.post('/addticket', validateUser, function(req, res){
 	new_task.start_time = req.body.start_time
 	new_task.deadline = req.body.deadline
 	new_task.status = false
+	new_task.url_proof = req.body.url_proof
 
 	var id_project = req.body.id_project;
 	var operation = req.body.operation;
